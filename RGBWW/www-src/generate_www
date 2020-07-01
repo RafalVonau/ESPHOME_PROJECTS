@@ -1,0 +1,76 @@
+#!/usr/bin/perl
+
+#
+# Generate data for www page.
+#
+# Copyright (C) 2006 ELFIN
+# Author: Rafal Vonau <rafal.vonau@elfin-pe.pl>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+
+
+$ENV{LANG}="C"; # ¶rodowisko w jêzyku angielskim
+$USE_GZIP=0;    # gzip files flag
+
+open (IN,"find *.html |");
+@src=<IN>;
+close IN; 
+
+foreach (@src) {
+	chop($_);
+}
+
+foreach (@src) {
+	$DATA="";
+	$ext=$_;
+	if (!($ext=~ /~/) && !($ext=~ /\.session/) && !($ext=~/\.svn/)) {
+		open (IN,"cat $_ | gzip -9 |");
+		@dst=<IN>;
+		close IN;
+		foreach (@dst) {
+			$DATA="$DATA$_";
+		}
+		$ssize = length $DATA;
+		$FILES_IN{"$_"}="$DATA";
+		#print $FILES_IN{"$_"}
+	}
+}
+
+
+open (OUTFILE,">../www_fs.h");
+
+while (($key, $value) = each(%FILES_IN)){
+	$key =~ s/\./_/g;
+	$key =~ s/\//_/g;
+	$key =~ s/\-/_/g;
+	print OUTFILE "const uint8_t __${key}[] = {\n";
+	@chars=split(//, $value);
+	$i=0;$j=0;
+	foreach (@chars) {
+		$j++;
+		$oo=sprintf("0x%x",ord($_));
+		print OUTFILE "$oo,";
+		if (++$i==0x10) {
+			print OUTFILE "\n";
+			$i=0;
+		}
+	}
+	$SIZE{"$key"}=$j;
+	print OUTFILE "};\n\n";
+}
+
+@keys = sort { $a cmp $b } keys %FILES_IN;
+foreach (@keys) {
+	$key=$_;
+	$oldkey=$_;
+	$key =~ s/\./_/g;
+	$key =~ s/\//_/g;
+	$key =~ s/\-/_/g;
+	print OUTFILE "#define www_${key}_size $SIZE{$key}\n";
+}
+print OUTFILE "\n";
+
+close OUTFILE;

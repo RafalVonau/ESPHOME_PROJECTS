@@ -1,0 +1,68 @@
+esphome:
+  name: rgbww
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - my_www_page.h
+  libraries:
+    - ArduinoJson-esphomelib@5.13.3
+
+
+<<: !include ../wifi.yaml
+
+# Enable Home Assistant API
+api:
+
+# Example configuration entry
+light:
+  - platform: rgbww
+    name: "RGBWW"
+    red: output_component1
+    green: output_component2
+    blue: output_component3
+    cold_white: output_component4
+    warm_white: output_component5
+    cold_white_color_temperature: 6000 K
+    warm_white_color_temperature: 3000 K
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal RGBWW"
+    update_interval: 60s
+
+# Example output entry
+output:
+  - platform: esp8266_pwm
+    id: output_component1
+    pin: D5
+    max_power: 100%
+
+  - platform: esp8266_pwm
+    id: output_component2
+    pin: D6
+    max_power: 100%
+
+  - platform: esp8266_pwm
+    id: output_component3
+    pin: D7
+    max_power: 100%
+
+  - platform: esp8266_pwm
+    id: output_component4
+    pin: D1
+    max_power: 100%
+
+  - platform: esp8266_pwm
+    id: output_component5
+    pin: D2
+    max_power: 100%
+
+custom_component:
+- lambda: |-
+    auto my_custom = new MyWWWPage();
+    return {my_custom};
+
+#mqtt:
+#  broker: 10.0.7.11
+#  username: livingroom
+#  password: MyMQTTPassword

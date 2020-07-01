@@ -1,0 +1,33 @@
+esphome:
+  name: zoomlamp
+  platform: ESP8266
+  board: d1_mini
+
+<<: !include ../wifi.yaml
+
+# Enable Home Assistant API
+api:
+
+light:
+  - platform: rgb
+    name: "Zoom Lamp"
+    red: output_component1
+    green: output_component2
+    blue: output_component3
+
+# Example output entry
+output:
+  - platform: esp8266_pwm
+    id: output_component1
+    pin: D5
+
+  - platform: esp8266_pwm
+    id: output_component2
+    pin: D6
+
+  - platform: esp8266_pwm
+    id: output_component3
+    pin: D7
+
+web_server:
+  port: 80

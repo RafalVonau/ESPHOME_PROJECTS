@@ -1,0 +1,35 @@
+#
+# Options: d1, d1_mini, d1_mini_lite, d1_mini_pro, esp01, esp01_1m, esp07, esp12e, esp210, esp8285, esp_wroom_02, espduino, espectro, espino, espinotee, espresso_lite_v1, espresso_lite_v2, gen4iod, heltec_wifi_kit_8, huzzah, inventone, modwifi, nodemcu, nodemcuv2, oak, phoenix_v1, phoenix_v2, sparkfunBlynk, thing, thingdev, wifi_slot, wifiduino, wifinfo, wio_link, wio_node, xinabox_cw01
+#
+
+esphome:
+  name: motion
+  platform: ESP8266
+  board: esp01_1m
+
+
+<<: !include ../wifi.yaml
+
+
+# Enable Home Assistant API
+api:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: False
+    name: "PIR Sensor"
+    device_class: motion
+
+status_led:
+  pin: GPIO2
+
+web_server:
+  port: 80
+  
+#custom_component:
+#- lambda: |-
+#    auto my_custom = new MySetupGPIO();
+#    return {my_custom};
