@@ -1,0 +1,18 @@
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid1
+      password: !secret wifi_password1
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+
+  ap:
+    ssid: "DoorLock Fallback"
+    password: !secret ap_password
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable OTA updates
+ota:

@@ -1,0 +1,32 @@
+#
+# Options: d1, d1_mini, d1_mini_lite, d1_mini_pro, esp01, esp01_1m, esp07, esp12e, esp210, esp8285, esp_wroom_02, espduino, espectro, espino, espinotee, espresso_lite_v1, espresso_lite_v2, gen4iod, heltec_wifi_kit_8, huzzah, inventone, modwifi, nodemcu, nodemcuv2, oak, phoenix_v1, phoenix_v2, sparkfunBlynk, thing, thingdev, wifi_slot, wifiduino, wifinfo, wio_link, wio_node, xinabox_cw01
+#
+
+esphome:
+  name: relay
+  platform: ESP8266
+  board: d1_mini
+
+<<: !include ../wifi.yaml
+
+# Enable Home Assistant API
+api:
+
+switch:
+  - platform: gpio
+    pin:
+      number: D2
+      inverted: False
+    name: "Relay"
+    restore_mode: RESTORE_DEFAULT_OFF
+
+status_led:
+  pin: GPIO2
+
+#web_server:
+#  port: 80
+
+#custom_component:
+#- lambda: |-
+#    auto my_custom = new MySetupGPIO();
+#    return {my_custom};

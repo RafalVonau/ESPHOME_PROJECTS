@@ -1,0 +1,45 @@
+esphome:
+  name: esp32cam
+  platform: ESP32
+  board: esp32dev
+
+<<: !include ../wifi.yaml
+
+#wifi:
+#  fast_connect: True
+
+api:
+  reboot_timeout: 0s
+
+# ESP32-CAM
+esp32_camera:
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 640x480
+  jpeg_quality: 20
+  name: Kamera
+  # ... Frame Settings
+
+# Flashlight
+output:
+  - platform: gpio
+    pin: GPIO4
+    id: gpio_4
+
+light:
+  - platform: binary
+    output: gpio_4
+    name: esp32cam light
+
+web_server:
+  port: 80
+  

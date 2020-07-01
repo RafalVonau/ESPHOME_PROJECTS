@@ -1,0 +1,25 @@
+esphome:
+  name: bazafan
+  platform: ESP8266
+  board: d1_mini
+
+<<: !include ../wifi.yaml
+
+# Enable Home Assistant API
+api:
+
+fan:
+  - platform: speed
+    output: my_output_fan
+    name: "Air Fan"
+
+output:
+  - platform: esp8266_pwm
+    id: my_output_fan
+    pin: D1
+
+status_led:
+  pin: GPIO2
+
+web_server:
+  port: 80
