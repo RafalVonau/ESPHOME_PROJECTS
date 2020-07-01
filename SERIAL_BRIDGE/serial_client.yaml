@@ -1,0 +1,36 @@
+esphome:
+  name: serial_client
+  platform: ESP8266
+  board: d1_mini
+  includes:
+  - bridge.h
+  libraries:
+    - ESPAsyncUDP
+  # Need to override -Wl,-T - the only way is by setting all build_flags
+  platformio_options:
+    build_flags: -DESPHOME_LOG_LEVEL=ESPHOME_LOG_LEVEL_DEBUG -DUSE_STORE_LOG_STR_IN_FLASH -Wl,-Teagle.flash.4m1m.ld -fno-exceptions
+    data_dir: ../../data
+
+<<: !include ../wifi.yaml
+
+uart:
+  id: uart_bus
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 2000000
+
+custom_component:
+- lambda: |-
+    auto my_custom = new BRIDGE(id(uart_bus));
+    return {my_custom};
+  id: bridge_component
+
+logger:
+  baud_rate: 0
+
+status_led:
+  pin:
+    number: D4 # GPIO2 pin
+    inverted: true
+
+

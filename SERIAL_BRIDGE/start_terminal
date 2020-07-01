@@ -1,0 +1,4 @@
+#!/bin/bash
+. /opt/esp-open-sdk/env
+
+miniterm.py /dev/ttyUSB0 2000000
