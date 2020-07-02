@@ -9,7 +9,7 @@ import os
 from time import sleep
 from threading import Thread
 
-ip   = '10.0.7.233'
+ip   = 'serial_client.local'
 port = 1234
 
 def handler(signum, frame):

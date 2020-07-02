@@ -182,9 +182,11 @@ public:
 		m_tx_buffer      = new RingBuffer(BUFFER_SIZE);
 		m_rx_buffer      = new RingBuffer(BUFFER_SIZE);
 		m_tcp            = new AsyncServer(1234); // start listening on tcp port 1234
+		m_client         = nullptr;
 		m_tcp->onClient([this](void* arg, AsyncClient* client) {
 			m_client = client;
 			client->onData([this](void* arg, AsyncClient* client, void *data, size_t len) {m_tx_buffer->write((char *)data,len);}, NULL);
+			client->onDisconnect([this](void* arg, AsyncClient* client) {if (m_client == client) m_client = nullptr;}, NULL);
 		}, NULL);
 		m_tcp->begin();
 	}
