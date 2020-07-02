@@ -3,7 +3,7 @@ esphome:
   platform: ESP8266
   board: d1_mini
   includes:
-  - bridge.h
+  - bridge_udp.h
   libraries:
     - ESPAsyncUDP
   # Need to override -Wl,-T - the only way is by setting all build_flags
