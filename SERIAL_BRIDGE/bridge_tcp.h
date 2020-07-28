@@ -189,6 +189,7 @@ public:
 			client->onDisconnect([this](void* arg, AsyncClient* client) {if (m_client == client) m_client = nullptr;}, NULL);
 		}, NULL);
 		m_tcp->begin();
+		m_hf.start();
 	}
 	//==========================================================================================
 
@@ -237,6 +238,7 @@ public:
 	RingBuffer      *m_rx_buffer;
 	uint64_t         m_previousMicros;          /*!< Previous micros for timeout computations      */
 	size_t           m_lastBytes;               /*!< Last avail bytes for timeout computations     */
+	HighFrequencyLoopRequester m_hf;
 };
 
 

@@ -192,6 +192,7 @@ public:
 				m_port = packet.remotePort();
 			});
 		}
+		m_hf.start();
 	}
 	//==========================================================================================
 
@@ -241,6 +242,7 @@ public:
 	uint16_t         m_port;
 	uint64_t         m_previousMicros;          /*!< Previous micros for timeout computations      */
 	int              m_lastBytes;               /*!< Last avail bytes for timeout computations     */
+	HighFrequencyLoopRequester m_hf;
 };
 
 
